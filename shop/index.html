@@ -1,408 +1,587 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FESSA Shop</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<title>FESSA Shop | Cuidado del cabello</title>
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f3ee;
-      color: #111;
-    }
+<style>
+:root{
+  --bg:#f4f1eb;
+  --card:#fff;
+  --black:#111;
+  --grey:#777;
+  --line:#e5e1da;
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #f5f3ee;
-      border-bottom: 1px solid #ddd;
-      padding: 18px 16px;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    .header-top {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
+html{scroll-behavior:smooth}
 
-    .logo {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--black);
+  -webkit-font-smoothing:antialiased;
+}
 
-    .cart {
-      background: #111;
-      color: white;
-      border: 0;
-      border-radius: 50px;
-      padding: 12px 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button,input{font:inherit}
 
-    main {
-      max-width: 1100px;
-      margin: auto;
-      padding: 25px 16px 80px;
-    }
+button{cursor:pointer}
 
-    h1 {
-      font-size: 36px;
-      margin-bottom: 8px;
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(244,241,235,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
 
-    .subtitle {
-      color: #666;
-      margin-bottom: 22px;
-    }
+.nav{
+  max-width:1200px;
+  margin:auto;
+  height:72px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-    .search {
-      width: 100%;
-      padding: 16px 18px;
-      border: 1px solid #ccc;
-      border-radius: 50px;
-      font-size: 16px;
-      outline: none;
-      background: white;
-      margin-bottom: 25px;
-    }
+.logo{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:3px;
+}
 
-    .categories {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      margin-bottom: 10px;
-    }
+.logo small{
+  display:block;
+  font-size:8px;
+  letter-spacing:2px;
+  margin-top:2px;
+  font-weight:600;
+}
 
-    .category {
-      white-space: nowrap;
-      border: 1px solid #111;
-      background: transparent;
-      border-radius: 50px;
-      padding: 9px 15px;
-      cursor: pointer;
-    }
+.cart-button{
+  border:0;
+  background:#111;
+  color:#fff;
+  padding:12px 17px;
+  border-radius:999px;
+  font-weight:800;
+}
 
-    .category.active {
-      background: #111;
-      color: white;
-    }
+.hero{
+  max-width:1200px;
+  margin:auto;
+  padding:42px 18px 26px;
+}
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
+.hero-tag{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:800;
+  margin-bottom:12px;
+}
 
-    .product {
-      background: white;
-      border-radius: 20px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
+.hero h1{
+  font-size:clamp(37px,9vw,72px);
+  line-height:.96;
+  letter-spacing:-2.5px;
+  max-width:850px;
+}
 
-    .product-image {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #f1f1f1;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      cursor: pointer;
-    }
+.hero p{
+  max-width:600px;
+  color:#666;
+  font-size:16px;
+  line-height:1.5;
+  margin-top:18px;
+}
 
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+.shop{
+  max-width:1200px;
+  margin:auto;
+  padding:0 18px 80px;
+}
 
-    .placeholder {
-      text-align: center;
-      color: #888;
-      font-size: 13px;
-      padding: 10px;
-    }
+.search-wrap{
+  margin:15px 0;
+}
 
-    .product-info {
-      padding: 13px 3px 3px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
+.search{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  padding:17px 20px;
+  border-radius:999px;
+  outline:none;
+  font-size:16px;
+}
 
-    .brand {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: #777;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+.search:focus{
+  border-color:#111;
+}
 
-    .product h3 {
-      font-size: 15px;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
+.categories{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:5px 0 25px;
+  scrollbar-width:none;
+}
 
-    .price {
-      font-weight: 800;
-      font-size: 14px;
-      margin-top: auto;
-      margin-bottom: 11px;
-    }
+.categories::-webkit-scrollbar{display:none}
 
-    .add {
-      width: 100%;
-      border: 0;
-      background: #111;
-      color: white;
-      padding: 12px 8px;
-      border-radius: 50px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.category{
+  flex:none;
+  padding:10px 16px;
+  border:1px solid #111;
+  border-radius:999px;
+  background:transparent;
+  font-weight:700;
+  font-size:13px;
+}
 
-    .add:active {
-      transform: scale(.96);
-    }
+.category.active{
+  background:#111;
+  color:#fff;
+}
 
-    .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 50px 10px;
-      color: #777;
-    }
+.shop-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin:12px 0 18px;
+}
 
-    .cart-panel {
-      position: fixed;
-      z-index: 200;
-      top: 0;
-      right: -100%;
-      width: min(92%, 420px);
-      height: 100%;
-      background: white;
-      transition: .3s;
-      padding: 22px;
-      box-shadow: -10px 0 30px rgba(0,0,0,.15);
-      overflow-y: auto;
-    }
+.shop-heading h2{
+  font-size:24px;
+}
 
-    .cart-panel.open {
-      right: 0;
-    }
+.shop-heading span{
+  color:#777;
+  font-size:13px;
+}
 
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-    }
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
 
-    .close {
-      border: 0;
-      background: #eee;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
-    }
+.product{
+  background:var(--card);
+  border-radius:20px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  transition:transform .2s,box-shadow .2s;
+}
 
-    .cart-item {
-      padding: 15px 0;
-      border-bottom: 1px solid #eee;
-    }
+.product:active{
+  transform:scale(.985);
+}
 
-    .cart-item strong {
-      display: block;
-      margin-bottom: 7px;
-    }
+.product-image{
+  width:100%;
+  aspect-ratio:1/1.08;
+  background:#f8f8f8;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    .cart-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:10px;
+  transition:transform .35s;
+}
 
-    .cart-controls button {
-      border: 0;
-      background: #eee;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-    }
+.product:hover .product-image img{
+  transform:scale(1.04);
+}
 
-    .whatsapp {
-      display: block;
-      width: 100%;
-      margin-top: 25px;
-      background: #111;
-      color: white;
-      border: 0;
-      padding: 15px;
-      border-radius: 50px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.image-placeholder{
+  padding:15px;
+  text-align:center;
+  color:#999;
+  font-size:12px;
+  line-height:1.4;
+}
 
-    .pickup {
-      background: #f5f3ee;
-      padding: 15px;
-      border-radius: 15px;
-      margin-top: 15px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#111;
+  color:white;
+  font-size:9px;
+  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:.8px;
+  padding:7px 9px;
+  border-radius:999px;
+}
 
-    .overlay {
-      display: none;
-      position: fixed;
-      z-index: 150;
-      inset: 0;
-      background: rgba(0,0,0,.45);
-    }
+.product-content{
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
 
-    .overlay.show {
-      display: block;
-    }
+.brand{
+  color:#888;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 300;
-      inset: 0;
-      background: rgba(0,0,0,.5);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+.product h3{
+  font-size:14px;
+  line-height:1.25;
+  margin-bottom:7px;
+}
 
-    .modal.show {
-      display: flex;
-    }
+.short-description{
+  color:#777;
+  font-size:11px;
+  line-height:1.35;
+  margin-bottom:13px;
+}
 
-    .modal-box {
-      width: 100%;
-      max-width: 450px;
-      background: white;
-      border-radius: 22px;
-      padding: 22px;
-      position: relative;
-    }
+.price{
+  margin-top:auto;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:10px;
+}
 
-    .modal-box h2 {
-      padding-right: 40px;
-      margin-bottom: 10px;
-    }
+.add{
+  border:0;
+  width:100%;
+  background:#111;
+  color:#fff;
+  border-radius:999px;
+  padding:12px 8px;
+  font-size:12px;
+  font-weight:900;
+}
 
-    .modal-box p {
-      color: #555;
-      line-height: 1.5;
-    }
+.add:active{
+  transform:scale(.96);
+}
 
-    .modal-close {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-    }
+.no-results{
+  grid-column:1/-1;
+  padding:60px 10px;
+  text-align:center;
+  color:#777;
+}
 
-    .fly {
-      position: fixed;
-      z-index: 999;
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      object-fit: contain;
-      background: white;
-      pointer-events: none;
-      transition: all .65s cubic-bezier(.4,0,.2,1);
-    }
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.48);
+  z-index:150;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+}
 
-    footer {
-      text-align: center;
-      padding: 30px 15px;
-      color: #777;
-      font-size: 13px;
-    }
+.overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
 
-    @media (min-width: 700px) {
-      .products {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+.cart-panel{
+  position:fixed;
+  top:0;
+  right:-100%;
+  height:100%;
+  width:min(92%,430px);
+  background:#fff;
+  z-index:200;
+  padding:22px;
+  overflow:auto;
+  transition:.32s ease;
+  box-shadow:-15px 0 40px rgba(0,0,0,.15);
+}
 
-    @media (min-width: 950px) {
-      .products {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-  </style>
+.cart-panel.open{right:0}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.panel-head h2{font-size:27px}
+
+.close{
+  border:0;
+  background:#eee;
+  border-radius:50%;
+  width:39px;
+  height:39px;
+  font-size:21px;
+}
+
+.cart-empty{
+  color:#777;
+  padding:20px 0;
+}
+
+.cart-item{
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+}
+
+.cart-item strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.cart-controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.cart-controls button{
+  width:31px;
+  height:31px;
+  border-radius:50%;
+  border:0;
+  background:#eee;
+}
+
+.pickup{
+  background:var(--bg);
+  border-radius:16px;
+  padding:16px;
+  margin-top:22px;
+  font-size:13px;
+  line-height:1.55;
+}
+
+.whatsapp{
+  width:100%;
+  border:0;
+  background:#111;
+  color:#fff;
+  border-radius:999px;
+  padding:16px;
+  margin-top:15px;
+  font-weight:900;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:300;
+  background:rgba(0,0,0,.55);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:18px;
+}
+
+.modal.show{display:flex}
+
+.modal-card{
+  background:#fff;
+  width:100%;
+  max-width:480px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:24px;
+  position:relative;
+}
+
+.modal-image{
+  width:100%;
+  aspect-ratio:1.25/1;
+  background:#f7f7f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:18px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+.modal-brand{
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:#777;
+  margin-bottom:7px;
+}
+
+.modal-body h2{
+  font-size:24px;
+  padding-right:25px;
+  margin-bottom:12px;
+}
+
+.modal-body p{
+  color:#555;
+  line-height:1.55;
+  font-size:14px;
+}
+
+.modal-close{
+  position:absolute;
+  z-index:10;
+  right:13px;
+  top:13px;
+}
+
+.fly{
+  position:fixed;
+  z-index:9999;
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:15px;
+  pointer-events:none;
+  box-shadow:0 5px 20px rgba(0,0,0,.18);
+  transition:
+    left .65s cubic-bezier(.3,.7,.4,1),
+    top .65s cubic-bezier(.3,.7,.4,1),
+    width .65s,
+    height .65s,
+    opacity .65s,
+    transform .65s;
+}
+
+footer{
+  background:#111;
+  color:#fff;
+  padding:38px 18px;
+}
+
+.footer-inner{
+  max-width:1200px;
+  margin:auto;
+}
+
+.footer-logo{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:3px;
+  margin-bottom:10px;
+}
+
+footer p{
+  color:#aaa;
+  font-size:12px;
+  line-height:1.6;
+}
+
+@media(min-width:700px){
+  .products{
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+
+  .product h3{font-size:16px}
+}
+
+@media(min-width:1000px){
+  .products{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .hero{padding-top:65px}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="header-top">
-    <div class="logo">FESSA</div>
-    <button class="cart" id="cartButton">
-      Carrito (<span id="cartCount">0</span>)
+  <div class="nav">
+    <div class="logo">
+      FESSA
+      <small>PELUQUERÍA & BARBERÍA</small>
+    </div>
+
+    <button class="cart-button" id="cartButton">
+      Carrito · <span id="cartCount">0</span>
     </button>
   </div>
 </header>
 
-<main>
+<section class="hero">
+  <div class="hero-tag">FESSA SHOP</div>
 
-  <h1>FESSA Shop</h1>
-  <p class="subtitle">Productos seleccionados para el cuidado de tu pelo.</p>
+  <h1>Lo que tu pelo necesita.</h1>
 
-  <input
-    id="search"
-    class="search"
-    type="search"
-    placeholder="Buscar productos..."
-  >
+  <p>
+    Una selección de productos que usamos y recomendamos en FESSA
+    para cuidar tu pelo también en casa.
+  </p>
+</section>
+
+<main class="shop">
+
+  <div class="search-wrap">
+    <input
+      id="search"
+      class="search"
+      type="search"
+      placeholder="¿Qué estás buscando?"
+    >
+  </div>
 
   <div class="categories">
     <button class="category active" data-category="Todos">Todos</button>
     <button class="category" data-category="Shampoo">Shampoo</button>
-    <button class="category" data-category="Máscaras">Máscaras</button>
-    <button class="category" data-category="Protección térmica">Protección térmica</button>
+    <button class="category" data-category="Tratamientos">Tratamientos</button>
+    <button class="category" data-category="Protección">Protección térmica</button>
+    <button class="category" data-category="Styling">Styling</button>
   </div>
 
-  <div class="products" id="products"></div>
+  <div class="shop-heading">
+    <h2>Productos</h2>
+    <span id="productCount"></span>
+  </div>
+
+  <section class="products" id="products"></section>
 
 </main>
 
-<footer>
-  FESSA Peluquería & Barbería · Malabia 2359 · Palermo
-</footer>
-
-
 <div class="overlay" id="overlay"></div>
 
-<div class="cart-panel" id="cartPanel">
+<aside class="cart-panel" id="cartPanel">
 
-  <div class="cart-header">
+  <div class="panel-head">
     <h2>Tu carrito</h2>
     <button class="close" id="closeCart">×</button>
   </div>
@@ -412,437 +591,501 @@
   <div class="pickup">
     <strong>Retiro en FESSA</strong><br>
     Malabia 2359, Palermo, CABA.<br>
-    Coordinamos el retiro por WhatsApp.
+    Una vez realizado el pedido coordinamos el retiro por WhatsApp.
   </div>
 
   <button class="whatsapp" id="whatsappButton">
-    Pedir por WhatsApp
+    Finalizar pedido por WhatsApp
   </button>
 
-</div>
-
+</aside>
 
 <div class="modal" id="modal">
-  <div class="modal-box">
+
+  <div class="modal-card">
 
     <button class="close modal-close" id="modalClose">×</button>
 
-    <h2 id="modalTitle"></h2>
-    <p id="modalDescription"></p>
+    <div class="modal-image" id="modalImage"></div>
+
+    <div class="modal-body">
+
+      <div class="modal-brand" id="modalBrand"></div>
+
+      <h2 id="modalTitle"></h2>
+
+      <p id="modalDescription"></p>
+
+    </div>
 
   </div>
+
 </div>
 
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">FESSA</div>
+    <p>
+      Peluquería & Barbería<br>
+      Malabia 2359 · Palermo · CABA
+    </p>
+  </div>
+</footer>
 
 <script>
 
 const products = [
 
-  {
-    id: 1,
-    brand: "Fidelité",
-    name: "Argan Thermal Protector",
-    category: "Protección térmica",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Protector térmico con argán. Ayuda a proteger el cabello frente al calor del secador y herramientas térmicas."
-  },
+{
+ id:1,
+ brand:"Fidelité",
+ name:"Argan Thermal Protector",
+ category:"Protección",
+ price:"Precio a definir",
+ image:"images/fidelite-argan-thermal-protector.jpg",
+ badge:"Protección",
+ short:"Protección frente al calor.",
+ description:"Protector térmico con argán. Ayuda a proteger el cabello frente al calor del secador, planchita y otras herramientas térmicas."
+},
 
-  {
-    id: 2,
-    brand: "Fidelité",
-    name: "Caviar Hair Thermal Protector 120 ml",
-    category: "Protección térmica",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Protector térmico capilar con caviar. Ideal para utilizar antes del secado, planchita o herramientas de calor."
-  },
+{
+ id:2,
+ brand:"Fidelité",
+ name:"Caviar Hair Thermal Protector 120 ml",
+ category:"Protección",
+ price:"Precio a definir",
+ image:"images/fidelite-caviar-thermal-protector.jpg",
+ badge:"Protección",
+ short:"Protector térmico capilar.",
+ description:"Protector térmico de la línea Caviar Hair. Ideal para aplicar antes del secado o de utilizar herramientas de calor."
+},
 
-  {
-    id: 3,
-    brand: "La Puissance",
-    name: "Extra Cell Plex Reconstruction Shampoo 300 ml",
-    category: "Shampoo",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Shampoo de reconstrucción con tecnología Plex y aceites. Pensado para cabellos que necesitan cuidado y reconstrucción."
-  },
+{
+ id:3,
+ brand:"La Puissance",
+ name:"Extra Cell Plex Reconstruction Shampoo 300 ml",
+ category:"Shampoo",
+ price:"Precio a definir",
+ image:"images/la-puissance-extra-cell-plex.jpg",
+ badge:"Reconstrucción",
+ short:"Shampoo de reconstrucción.",
+ description:"Shampoo con Plex Technology & Natural Oils desarrollado para acompañar el cuidado de cabellos que necesitan reconstrucción."
+},
 
-  {
-    id: 4,
-    brand: "La Puissance",
-    name: "Matizador Blue Shampoo Platinum Blonde 300 ml",
-    category: "Shampoo",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Shampoo matizador para cabellos rubios y decolorados. Ayuda a neutralizar tonos no deseados."
-  },
+{
+ id:4,
+ brand:"La Puissance",
+ name:"Matizador Blue Shampoo Platinum Blonde 300 ml",
+ category:"Shampoo",
+ price:"Precio a definir",
+ image:"images/la-puissance-blue-shampoo.jpg",
+ badge:"Matizador",
+ short:"Para rubios y decolorados.",
+ description:"Shampoo matizador para cabellos rubios y decolorados. Ayuda al mantenimiento del tono y a neutralizar reflejos no deseados."
+},
 
-  {
-    id: 5,
-    brand: "Opción",
-    name: "Shampoo Violeta 900 ml",
-    category: "Shampoo",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Shampoo violeta de gran tamaño para el mantenimiento de cabellos rubios, grises o decolorados."
-  },
+{
+ id:5,
+ brand:"Opción",
+ name:"Shampoo Violeta 900 ml",
+ category:"Shampoo",
+ price:"Precio a definir",
+ image:"images/opcion-shampoo-violeta.jpg",
+ badge:"Matizador",
+ short:"Shampoo violeta 900 ml.",
+ description:"Shampoo violeta pensado para el mantenimiento de cabellos rubios, grises y decolorados."
+},
 
-  {
-    id: 6,
-    brand: "Fidelité",
-    name: "Máscara Capilar Coco & Vainilla 1000 g",
-    category: "Máscaras",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Máscara capilar de coco y vainilla. Tratamiento para aportar suavidad y mejorar el aspecto del cabello."
-  },
+{
+ id:6,
+ brand:"Fidelité",
+ name:"Máscara Coco & Vainilla 1000 g",
+ category:"Tratamientos",
+ price:"Precio a definir",
+ image:"images/fidelite-coco-vainilla.jpg",
+ badge:"Tratamiento",
+ short:"Suavidad y cuidado intensivo.",
+ description:"Máscara capilar de Coco & Vainilla para complementar la rutina de cuidado del cabello y aportar suavidad."
+},
 
-  {
-    id: 7,
-    brand: "Fidelité",
-    name: "Argan Mythical Hair Mask 250 g",
-    category: "Máscaras",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Máscara capilar con argán para cabellos secos y porosos. Puede utilizarse como tratamiento semanal."
-  },
+{
+ id:7,
+ brand:"Fidelité",
+ name:"Argan Mythical Hair Mask 250 g",
+ category:"Tratamientos",
+ price:"Precio a definir",
+ image:"images/fidelite-argan-mask.jpg",
+ badge:"Recomendado",
+ short:"Ideal para cabello seco.",
+ description:"Máscara capilar con argán. Una opción de tratamiento semanal especialmente útil para cabellos secos y porosos."
+},
 
-  {
-    id: 8,
-    brand: "Karseell",
-    name: "Maca Power Collagen 500 ml",
-    category: "Máscaras",
-    price: "Precio a definir",
-    image: "",
-    description:
-      "Tratamiento capilar de Karseell con colágeno. Indicado para nutrición y cuidado intensivo del cabello."
-  }
+{
+ id:8,
+ brand:"Karseell",
+ name:"Maca Power Collagen 500 ml",
+ category:"Tratamientos",
+ price:"Precio a definir",
+ image:"images/karseell-collagen.jpg",
+ badge:"Tratamiento",
+ short:"Tratamiento intensivo.",
+ description:"Tratamiento capilar Karseell Maca Power Collagen para complementar una rutina de nutrición y cuidado intensivo."
+},
+
+{
+ id:9,
+ brand:"Primont",
+ name:"Polvo Texturizador Mate Dust It 5 g",
+ category:"Styling",
+ price:"Precio a definir",
+ image:"images/primont-polvo-texturizador.jpg",
+ badge:"Styling",
+ short:"Textura y acabado mate.",
+ description:"Polvo texturizador de acabado mate. Ideal para aportar textura, definición y volumen al peinado."
+},
+
+{
+ id:10,
+ brand:"Sir Fausto",
+ name:"Old Wax Fuerte 100 ml",
+ category:"Styling",
+ price:"Precio a definir",
+ image:"images/sir-fausto-old-wax.jpg",
+ badge:"Styling",
+ short:"Fijación fuerte.",
+ description:"Cera de fijación fuerte para trabajar y definir el peinado."
+},
+
+{
+ id:11,
+ brand:"Opción",
+ name:"Navajas Pomada Mate 90 g",
+ category:"Styling",
+ price:"Precio a definir",
+ image:"images/opcion-navajas-pomada-mate.jpg",
+ badge:"Styling",
+ short:"Pomada de acabado mate.",
+ description:"Pomada para modelar y definir el cabello con acabado mate."
+},
+
+{
+ id:12,
+ brand:"Sir Fausto",
+ name:"Pomada Brillante 100 ml",
+ category:"Styling",
+ price:"Precio a definir",
+ image:"images/sir-fausto-pomada-brillante.jpg",
+ badge:"Styling",
+ short:"Definición con brillo.",
+ description:"Pomada de styling para modelar el peinado y conseguir un acabado con brillo."
+},
+
+{
+ id:13,
+ brand:"Sir Fausto",
+ name:"Pomada Opaca 100 ml",
+ category:"Styling",
+ price:"Precio a definir",
+ image:"images/sir-fausto-pomada-opaca.jpg",
+ badge:"Styling",
+ short:"Acabado opaco.",
+ description:"Pomada para definir y modelar el cabello manteniendo un acabado opaco."
+}
 
 ];
 
 let cart = {};
 let currentCategory = "Todos";
 
-const productsContainer = document.getElementById("products");
-const searchInput = document.getElementById("search");
+const productBox = document.getElementById("products");
+const search = document.getElementById("search");
 
-function renderProducts() {
+function renderProducts(){
 
-  const text = searchInput.value.toLowerCase().trim();
+ const query=search.value.toLowerCase().trim();
 
-  const filtered = products.filter(product => {
+ const filtered=products.filter(p=>{
 
-    const matchesSearch =
-      product.name.toLowerCase().includes(text) ||
-      product.brand.toLowerCase().includes(text);
+   const searchMatch=
+     p.name.toLowerCase().includes(query) ||
+     p.brand.toLowerCase().includes(query) ||
+     p.short.toLowerCase().includes(query);
 
-    const matchesCategory =
-      currentCategory === "Todos" ||
-      product.category === currentCategory;
+   const categoryMatch=
+     currentCategory==="Todos" ||
+     p.category===currentCategory;
 
-    return matchesSearch && matchesCategory;
+   return searchMatch && categoryMatch;
 
-  });
+ });
 
-  if (!filtered.length) {
-    productsContainer.innerHTML =
-      '<div class="empty">No encontramos productos.</div>';
-    return;
-  }
+ document.getElementById("productCount").textContent =
+   filtered.length + (filtered.length===1 ? " producto" : " productos");
 
-  productsContainer.innerHTML = filtered.map(product => `
+ if(!filtered.length){
+   productBox.innerHTML=
+     '<div class="no-results">No encontramos productos con esa búsqueda.</div>';
+   return;
+ }
 
-    <article class="product">
+ productBox.innerHTML=filtered.map(p=>`
 
-      <div
-        class="product-image"
-        onclick="showProduct(${product.id})"
-      >
+ <article class="product">
 
-        ${
-          product.image
-          ? `<img src="${product.image}" alt="${product.name}">`
-          : `<div class="placeholder">
-               FOTO DEL PRODUCTO<br>
-               <small>La agregamos después</small>
-             </div>`
-        }
+   <div class="product-image" onclick="showProduct(${p.id})">
 
-      </div>
+     <div class="badge">${p.badge}</div>
 
-      <div class="product-info">
+     <img
+       src="${p.image}"
+       alt="${p.name}"
+       loading="lazy"
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+     >
 
-        <div class="brand">${product.brand}</div>
+     <div class="image-placeholder" style="display:none">
+       FOTO DEL PRODUCTO<br>
+       <small>La cargamos en el próximo paso</small>
+     </div>
 
-        <h3>${product.name}</h3>
+   </div>
 
-        <div class="price">${product.price}</div>
+   <div class="product-content">
 
-        <button
-          class="add"
-          onclick="addToCart(${product.id}, this)"
-        >
-          Agregar al carrito
-        </button>
+     <div class="brand">${p.brand}</div>
 
-      </div>
+     <h3>${p.name}</h3>
 
-    </article>
+     <div class="short-description">${p.short}</div>
 
-  `).join("");
+     <div class="price">${p.price}</div>
 
-}
+     <button
+       class="add"
+       onclick="addToCart(${p.id},this)"
+     >
+       Agregar al carrito
+     </button>
 
-function addToCart(id, button) {
+   </div>
 
-  cart[id] = (cart[id] || 0) + 1;
+ </article>
 
-  updateCart();
-
-  animateToCart(button);
+ `).join("");
 
 }
 
-function updateCart() {
+function addToCart(id,button){
 
-  const count =
-    Object.values(cart).reduce((a,b) => a+b, 0);
+ cart[id]=(cart[id]||0)+1;
 
-  document.getElementById("cartCount").textContent = count;
-
-  const container = document.getElementById("cartItems");
-
-  const ids = Object.keys(cart);
-
-  if (!ids.length) {
-
-    container.innerHTML =
-      "<p>Tu carrito está vacío.</p>";
-
-    return;
-
-  }
-
-  container.innerHTML = ids.map(id => {
-
-    const product =
-      products.find(p => p.id === Number(id));
-
-    return `
-
-      <div class="cart-item">
-
-        <strong>${product.name}</strong>
-
-        <div class="cart-controls">
-
-          <button onclick="changeQuantity(${id}, -1)">−</button>
-
-          <span>${cart[id]}</span>
-
-          <button onclick="changeQuantity(${id}, 1)">+</button>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }).join("");
+ updateCart();
+ flyToCart(button);
 
 }
 
-function changeQuantity(id, amount) {
+function updateCart(){
 
-  cart[id] += amount;
+ const count=Object.values(cart)
+   .reduce((total,q)=>total+q,0);
 
-  if (cart[id] <= 0)
-    delete cart[id];
+ document.getElementById("cartCount").textContent=count;
 
-  updateCart();
+ const box=document.getElementById("cartItems");
+ const ids=Object.keys(cart);
 
-}
+ if(!ids.length){
+   box.innerHTML='<div class="cart-empty">Todavía no agregaste productos.</div>';
+   return;
+ }
 
-function animateToCart(button) {
+ box.innerHTML=ids.map(id=>{
 
-  const productCard =
-    button.closest(".product");
+   const p=products.find(x=>x.id===Number(id));
 
-  const image =
-    productCard.querySelector("img");
+   return`
 
-  const start =
-    productCard.getBoundingClientRect();
+   <div class="cart-item">
 
-  const cartButton =
-    document.getElementById("cartButton");
+     <strong>${p.name}</strong>
 
-  const end =
-    cartButton.getBoundingClientRect();
+     <div class="cart-controls">
 
-  const flyer =
-    document.createElement(
-      image ? "img" : "div"
-    );
+       <button onclick="quantity(${id},-1)">−</button>
 
-  flyer.className = "fly";
+       <span>${cart[id]}</span>
 
-  if (image)
-    flyer.src = image.src;
+       <button onclick="quantity(${id},1)">+</button>
 
-  flyer.style.left =
-    (start.left + start.width / 2 - 30) + "px";
+     </div>
 
-  flyer.style.top =
-    (start.top + 50) + "px";
+   </div>
 
-  document.body.appendChild(flyer);
+   `;
 
-  requestAnimationFrame(() => {
-
-    flyer.style.left =
-      (end.left + end.width / 2 - 20) + "px";
-
-    flyer.style.top =
-      (end.top + 5) + "px";
-
-    flyer.style.width = "35px";
-    flyer.style.height = "35px";
-    flyer.style.opacity = ".3";
-
-  });
-
-  setTimeout(() => flyer.remove(), 700);
+ }).join("");
 
 }
 
-function showProduct(id) {
+function quantity(id,value){
 
-  const product =
-    products.find(p => p.id === id);
+ cart[id]+=value;
 
-  document.getElementById("modalTitle")
-    .textContent = product.name;
+ if(cart[id]<=0)
+   delete cart[id];
 
-  document.getElementById("modalDescription")
-    .textContent = product.description;
-
-  document.getElementById("modal")
-    .classList.add("show");
+ updateCart();
 
 }
 
-document
-  .querySelectorAll(".category")
-  .forEach(button => {
+function flyToCart(button){
 
-    button.addEventListener("click", () => {
+ const card=button.closest(".product");
+ const img=card.querySelector("img");
 
-      document
-        .querySelectorAll(".category")
-        .forEach(b => b.classList.remove("active"));
+ const from=card
+   .querySelector(".product-image")
+   .getBoundingClientRect();
 
-      button.classList.add("active");
+ const target=document
+   .getElementById("cartButton")
+   .getBoundingClientRect();
 
-      currentCategory =
-        button.dataset.category;
+ let flying;
 
-      renderProducts();
+ if(img && img.style.display!=="none"){
 
-    });
+   flying=img.cloneNode(true);
 
-  });
+ }else{
 
-searchInput.addEventListener(
-  "input",
-  renderProducts
-);
+   flying=document.createElement("div");
 
-const cartPanel =
-  document.getElementById("cartPanel");
+ }
 
-const overlay =
-  document.getElementById("overlay");
+ flying.className="fly";
 
-document
-  .getElementById("cartButton")
-  .onclick = () => {
+ flying.style.left=(from.left+from.width/2-35)+"px";
+ flying.style.top=(from.top+from.height/2-35)+"px";
 
-    cartPanel.classList.add("open");
-    overlay.classList.add("show");
+ document.body.appendChild(flying);
 
-  };
+ requestAnimationFrame(()=>{
 
-function closeCart() {
+   flying.style.left=(target.left+target.width/2-15)+"px";
+   flying.style.top=(target.top+target.height/2-15)+"px";
+   flying.style.width="30px";
+   flying.style.height="30px";
+   flying.style.opacity="0";
+   flying.style.transform="rotate(12deg) scale(.5)";
 
-  cartPanel.classList.remove("open");
-  overlay.classList.remove("show");
+ });
+
+ setTimeout(()=>flying.remove(),700);
 
 }
 
-document
-  .getElementById("closeCart")
-  .onclick = closeCart;
+function showProduct(id){
 
-overlay.onclick = closeCart;
+ const p=products.find(x=>x.id===id);
 
-document
-  .getElementById("modalClose")
-  .onclick = () =>
-    document
-      .getElementById("modal")
-      .classList.remove("show");
+ document.getElementById("modalBrand").textContent=p.brand;
+ document.getElementById("modalTitle").textContent=p.name;
+ document.getElementById("modalDescription").textContent=p.description;
 
-document
-  .getElementById("modal")
-  .addEventListener("click", event => {
+ document.getElementById("modalImage").innerHTML=`
+   <img
+     src="${p.image}"
+     alt="${p.name}"
+     onerror="this.parentElement.innerHTML='<div class=&quot;image-placeholder&quot;>Foto del producto pendiente</div>'"
+   >
+ `;
 
-    if (event.target.id === "modal")
-      event.currentTarget.classList.remove("show");
+ document.getElementById("modal").classList.add("show");
 
-  });
+}
 
-document
-  .getElementById("whatsappButton")
-  .onclick = () => {
+document.querySelectorAll(".category").forEach(btn=>{
 
-    const ids = Object.keys(cart);
+ btn.onclick=()=>{
 
-    if (!ids.length) {
-      alert("Agregá al menos un producto al carrito.");
-      return;
-    }
+   document.querySelectorAll(".category")
+     .forEach(x=>x.classList.remove("active"));
 
-    let message =
-      "Hola FESSA! Quiero pedir:%0A%0A";
+   btn.classList.add("active");
 
-    ids.forEach(id => {
+   currentCategory=btn.dataset.category;
 
-      const product =
-        products.find(p => p.id === Number(id));
+   renderProducts();
 
-      message +=
-        `• ${cart[id]} x ${product.name}%0A`;
+ };
 
-    });
+});
 
-    message +=
-      "%0AQuiero coordinar el retiro en Malabia 2359.";
+search.addEventListener("input",renderProducts);
 
-    window.open(
-      "https://wa.me/5491130147625?text=" + message,
-      "_blank"
-    );
+const panel=document.getElementById("cartPanel");
+const overlay=document.getElementById("overlay");
 
-  };
+document.getElementById("cartButton").onclick=()=>{
+
+ panel.classList.add("open");
+ overlay.classList.add("show");
+
+};
+
+function closeCart(){
+
+ panel.classList.remove("open");
+ overlay.classList.remove("show");
+
+}
+
+document.getElementById("closeCart").onclick=closeCart;
+overlay.onclick=closeCart;
+
+document.getElementById("modalClose").onclick=()=>{
+
+ document.getElementById("modal").classList.remove("show");
+
+};
+
+document.getElementById("modal").onclick=e=>{
+
+ if(e.target.id==="modal")
+   e.currentTarget.classList.remove("show");
+
+};
+
+document.getElementById("whatsappButton").onclick=()=>{
+
+ const ids=Object.keys(cart);
+
+ if(!ids.length){
+
+   alert("Agregá al menos un producto al carrito.");
+   return;
+
+ }
+
+ let message="Hola FESSA! Quiero pedir:%0A%0A";
+
+ ids.forEach(id=>{
+
+   const p=products.find(x=>x.id===Number(id));
+
+   message+=`• ${cart[id]} x ${p.name}%0A`;
+
+ });
+
+ message+="%0AQuiero coordinar el retiro en Malabia 2359.";
+
+ window.open(
+   "https://wa.me/5491130147625?text="+message,
+   "_blank"
+ );
+
+};
 
 renderProducts();
 updateCart();
