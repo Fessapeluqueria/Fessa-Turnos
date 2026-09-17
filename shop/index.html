@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FESSA Shop</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f3ee;
+      color: #111;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f5f3ee;
+      border-bottom: 1px solid #ddd;
+      padding: 18px 16px;
+    }
+
+    .header-top {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .cart {
+      background: #111;
+      color: white;
+      border: 0;
+      border-radius: 50px;
+      padding: 12px 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 16px 80px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid #ccc;
+      border-radius: 50px;
+      font-size: 16px;
+      outline: none;
+      background: white;
+      margin-bottom: 25px;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+      margin-bottom: 10px;
+    }
+
+    .category {
+      white-space: nowrap;
+      border: 1px solid #111;
+      background: transparent;
+      border-radius: 50px;
+      padding: 9px 15px;
+      cursor: pointer;
+    }
+
+    .category.active {
+      background: #111;
+      color: white;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #f1f1f1;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .placeholder {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      padding: 10px;
+    }
+
+    .product-info {
+      padding: 13px 3px 3px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .brand {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #777;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product h3 {
+      font-size: 15px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-weight: 800;
+      font-size: 14px;
+      margin-top: auto;
+      margin-bottom: 11px;
+    }
+
+    .add {
+      width: 100%;
+      border: 0;
+      background: #111;
+      color: white;
+      padding: 12px 8px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add:active {
+      transform: scale(.96);
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 50px 10px;
+      color: #777;
+    }
+
+    .cart-panel {
+      position: fixed;
+      z-index: 200;
+      top: 0;
+      right: -100%;
+      width: min(92%, 420px);
+      height: 100%;
+      background: white;
+      transition: .3s;
+      padding: 22px;
+      box-shadow: -10px 0 30px rgba(0,0,0,.15);
+      overflow-y: auto;
+    }
+
+    .cart-panel.open {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .close {
+      border: 0;
+      background: #eee;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cart-controls button {
+      border: 0;
+      background: #eee;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .whatsapp {
+      display: block;
+      width: 100%;
+      margin-top: 25px;
+      background: #111;
+      color: white;
+      border: 0;
+      padding: 15px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pickup {
+      background: #f5f3ee;
+      padding: 15px;
+      border-radius: 15px;
+      margin-top: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      z-index: 150;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 300;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 450px;
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      position: relative;
+    }
+
+    .modal-box h2 {
+      padding-right: 40px;
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+    }
+
+    .fly {
+      position: fixed;
+      z-index: 999;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: white;
+      pointer-events: none;
+      transition: all .65s cubic-bezier(.4,0,.2,1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (min-width: 700px) {
+      .products {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 950px) {
+      .products {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">FESSA</div>
+    <button class="cart" id="cartButton">
+      Carrito (<span id="cartCount">0</span>)
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <h1>FESSA Shop</h1>
+  <p class="subtitle">Productos seleccionados para el cuidado de tu pelo.</p>
+
+  <input
+    id="search"
+    class="search"
+    type="search"
+    placeholder="Buscar productos..."
+  >
+
+  <div class="categories">
+    <button class="category active" data-category="Todos">Todos</button>
+    <button class="category" data-category="Shampoo">Shampoo</button>
+    <button class="category" data-category="Máscaras">Máscaras</button>
+    <button class="category" data-category="Protección térmica">Protección térmica</button>
+  </div>
+
+  <div class="products" id="products"></div>
+
+</main>
+
+<footer>
+  FESSA Peluquería & Barbería · Malabia 2359 · Palermo
+</footer>
+
+
+<div class="overlay" id="overlay"></div>
+
+<div class="cart-panel" id="cartPanel">
+
+  <div class="cart-header">
+    <h2>Tu carrito</h2>
+    <button class="close" id="closeCart">×</button>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div class="pickup">
+    <strong>Retiro en FESSA</strong><br>
+    Malabia 2359, Palermo, CABA.<br>
+    Coordinamos el retiro por WhatsApp.
+  </div>
+
+  <button class="whatsapp" id="whatsappButton">
+    Pedir por WhatsApp
+  </button>
+
+</div>
+
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+
+    <button class="close modal-close" id="modalClose">×</button>
+
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+
+  </div>
+</div>
+
+
+<script>
+
+const products = [
+
+  {
+    id: 1,
+    brand: "Fidelité",
+    name: "Argan Thermal Protector",
+    category: "Protección térmica",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Protector térmico con argán. Ayuda a proteger el cabello frente al calor del secador y herramientas térmicas."
+  },
+
+  {
+    id: 2,
+    brand: "Fidelité",
+    name: "Caviar Hair Thermal Protector 120 ml",
+    category: "Protección térmica",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Protector térmico capilar con caviar. Ideal para utilizar antes del secado, planchita o herramientas de calor."
+  },
+
+  {
+    id: 3,
+    brand: "La Puissance",
+    name: "Extra Cell Plex Reconstruction Shampoo 300 ml",
+    category: "Shampoo",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Shampoo de reconstrucción con tecnología Plex y aceites. Pensado para cabellos que necesitan cuidado y reconstrucción."
+  },
+
+  {
+    id: 4,
+    brand: "La Puissance",
+    name: "Matizador Blue Shampoo Platinum Blonde 300 ml",
+    category: "Shampoo",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Shampoo matizador para cabellos rubios y decolorados. Ayuda a neutralizar tonos no deseados."
+  },
+
+  {
+    id: 5,
+    brand: "Opción",
+    name: "Shampoo Violeta 900 ml",
+    category: "Shampoo",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Shampoo violeta de gran tamaño para el mantenimiento de cabellos rubios, grises o decolorados."
+  },
+
+  {
+    id: 6,
+    brand: "Fidelité",
+    name: "Máscara Capilar Coco & Vainilla 1000 g",
+    category: "Máscaras",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Máscara capilar de coco y vainilla. Tratamiento para aportar suavidad y mejorar el aspecto del cabello."
+  },
+
+  {
+    id: 7,
+    brand: "Fidelité",
+    name: "Argan Mythical Hair Mask 250 g",
+    category: "Máscaras",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Máscara capilar con argán para cabellos secos y porosos. Puede utilizarse como tratamiento semanal."
+  },
+
+  {
+    id: 8,
+    brand: "Karseell",
+    name: "Maca Power Collagen 500 ml",
+    category: "Máscaras",
+    price: "Precio a definir",
+    image: "",
+    description:
+      "Tratamiento capilar de Karseell con colágeno. Indicado para nutrición y cuidado intensivo del cabello."
+  }
+
+];
+
+let cart = {};
+let currentCategory = "Todos";
+
+const productsContainer = document.getElementById("products");
+const searchInput = document.getElementById("search");
+
+function renderProducts() {
+
+  const text = searchInput.value.toLowerCase().trim();
+
+  const filtered = products.filter(product => {
+
+    const matchesSearch =
+      product.name.toLowerCase().includes(text) ||
+      product.brand.toLowerCase().includes(text);
+
+    const matchesCategory =
+      currentCategory === "Todos" ||
+      product.category === currentCategory;
+
+    return matchesSearch && matchesCategory;
+
+  });
+
+  if (!filtered.length) {
+    productsContainer.innerHTML =
+      '<div class="empty">No encontramos productos.</div>';
+    return;
+  }
+
+  productsContainer.innerHTML = filtered.map(product => `
+
+    <article class="product">
+
+      <div
+        class="product-image"
+        onclick="showProduct(${product.id})"
+      >
+
+        ${
+          product.image
+          ? `<img src="${product.image}" alt="${product.name}">`
+          : `<div class="placeholder">
+               FOTO DEL PRODUCTO<br>
+               <small>La agregamos después</small>
+             </div>`
+        }
+
+      </div>
+
+      <div class="product-info">
+
+        <div class="brand">${product.brand}</div>
+
+        <h3>${product.name}</h3>
+
+        <div class="price">${product.price}</div>
+
+        <button
+          class="add"
+          onclick="addToCart(${product.id}, this)"
+        >
+          Agregar al carrito
+        </button>
+
+      </div>
+
+    </article>
+
+  `).join("");
+
+}
+
+function addToCart(id, button) {
+
+  cart[id] = (cart[id] || 0) + 1;
+
+  updateCart();
+
+  animateToCart(button);
+
+}
+
+function updateCart() {
+
+  const count =
+    Object.values(cart).reduce((a,b) => a+b, 0);
+
+  document.getElementById("cartCount").textContent = count;
+
+  const container = document.getElementById("cartItems");
+
+  const ids = Object.keys(cart);
+
+  if (!ids.length) {
+
+    container.innerHTML =
+      "<p>Tu carrito está vacío.</p>";
+
+    return;
+
+  }
+
+  container.innerHTML = ids.map(id => {
+
+    const product =
+      products.find(p => p.id === Number(id));
+
+    return `
+
+      <div class="cart-item">
+
+        <strong>${product.name}</strong>
+
+        <div class="cart-controls">
+
+          <button onclick="changeQuantity(${id}, -1)">−</button>
+
+          <span>${cart[id]}</span>
+
+          <button onclick="changeQuantity(${id}, 1)">+</button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+function changeQuantity(id, amount) {
+
+  cart[id] += amount;
+
+  if (cart[id] <= 0)
+    delete cart[id];
+
+  updateCart();
+
+}
+
+function animateToCart(button) {
+
+  const productCard =
+    button.closest(".product");
+
+  const image =
+    productCard.querySelector("img");
+
+  const start =
+    productCard.getBoundingClientRect();
+
+  const cartButton =
+    document.getElementById("cartButton");
+
+  const end =
+    cartButton.getBoundingClientRect();
+
+  const flyer =
+    document.createElement(
+      image ? "img" : "div"
+    );
+
+  flyer.className = "fly";
+
+  if (image)
+    flyer.src = image.src;
+
+  flyer.style.left =
+    (start.left + start.width / 2 - 30) + "px";
+
+  flyer.style.top =
+    (start.top + 50) + "px";
+
+  document.body.appendChild(flyer);
+
+  requestAnimationFrame(() => {
+
+    flyer.style.left =
+      (end.left + end.width / 2 - 20) + "px";
+
+    flyer.style.top =
+      (end.top + 5) + "px";
+
+    flyer.style.width = "35px";
+    flyer.style.height = "35px";
+    flyer.style.opacity = ".3";
+
+  });
+
+  setTimeout(() => flyer.remove(), 700);
+
+}
+
+function showProduct(id) {
+
+  const product =
+    products.find(p => p.id === id);
+
+  document.getElementById("modalTitle")
+    .textContent = product.name;
+
+  document.getElementById("modalDescription")
+    .textContent = product.description;
+
+  document.getElementById("modal")
+    .classList.add("show");
+
+}
+
+document
+  .querySelectorAll(".category")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".category")
+        .forEach(b => b.classList.remove("active"));
+
+      button.classList.add("active");
+
+      currentCategory =
+        button.dataset.category;
+
+      renderProducts();
+
+    });
+
+  });
+
+searchInput.addEventListener(
+  "input",
+  renderProducts
+);
+
+const cartPanel =
+  document.getElementById("cartPanel");
+
+const overlay =
+  document.getElementById("overlay");
+
+document
+  .getElementById("cartButton")
+  .onclick = () => {
+
+    cartPanel.classList.add("open");
+    overlay.classList.add("show");
+
+  };
+
+function closeCart() {
+
+  cartPanel.classList.remove("open");
+  overlay.classList.remove("show");
+
+}
+
+document
+  .getElementById("closeCart")
+  .onclick = closeCart;
+
+overlay.onclick = closeCart;
+
+document
+  .getElementById("modalClose")
+  .onclick = () =>
+    document
+      .getElementById("modal")
+      .classList.remove("show");
+
+document
+  .getElementById("modal")
+  .addEventListener("click", event => {
+
+    if (event.target.id === "modal")
+      event.currentTarget.classList.remove("show");
+
+  });
+
+document
+  .getElementById("whatsappButton")
+  .onclick = () => {
+
+    const ids = Object.keys(cart);
+
+    if (!ids.length) {
+      alert("Agregá al menos un producto al carrito.");
+      return;
+    }
+
+    let message =
+      "Hola FESSA! Quiero pedir:%0A%0A";
+
+    ids.forEach(id => {
+
+      const product =
+        products.find(p => p.id === Number(id));
+
+      message +=
+        `• ${cart[id]} x ${product.name}%0A`;
+
+    });
+
+    message +=
+      "%0AQuiero coordinar el retiro en Malabia 2359.";
+
+    window.open(
+      "https://wa.me/5491130147625?text=" + message,
+      "_blank"
+    );
+
+  };
+
+renderProducts();
+updateCart();
+
+</script>
+
+</body>
+</html>
